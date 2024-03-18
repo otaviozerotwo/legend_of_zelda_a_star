@@ -8,7 +8,7 @@ function App() {
   const [rota, setRota] = useState([]);
 
   useEffect(() => {
-    const novaRota = aStar(matrizMapaHyrule, posicaoAgente, [7, 6]);
+    const novaRota = aStar(matrizMapaHyrule, 25, 28, 7, 6);
     setRota(novaRota);
   }, [posicaoAgente]);
 

@@ -1,130 +1,101 @@
-function distanciaEuclidiana(inicio, fim) {
-  const [x1, y1] = inicio;
-  const [x2, y2] = fim;
-
-  console.log('Inicio: ', inicio);
-  console.log('Fim: ', fim);
-
-  return console.log('Distancia Euclidiana: ', Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
-}
-
-function aStar(matrizMapaHyrule, inicio, fim) {
-  const listaAberta = [];
-  const listaFechada = new Set();
-
-  listaAberta.push({ posicao: inicio, g: 0, h: distanciaEuclidiana(inicio, fim), f: 0 });
-
-  console.log('Posição: ', inicio);
-  console.log('Lista Aberta: ', listaAberta);
-  console.log('Lista Fechada: ', listaFechada);
-  console.log('Tamanho Lista Aberta: ', listaAberta.length);
-
-  while (listaAberta.length > 0) {
-    console.log('Entrei no while!');
-
-    const posicaoAtual = encontrarMenorValorF(listaAberta);
-
-    console.log('Lista Aberta: ', listaAberta);
-
-    if (posicaoAtual.posicao[0] === fim[0] && posicaoAtual.posicao[1] === fim[1]) {
-      
-      console.log('Caminho encontrado!');
-      console.log('Lista Aberta: ', listaAberta);
-
-      return reconstrirCaminho(posicaoAtual);
-    }
-
-    listaAberta.splice(listaAberta.indexOf(posicaoAtual), 1);
-    listaFechada.add(posicaoAtual.posicao.toString());
-
-    const vizinhos = obterVizinhos(matrizMapaHyrule, posicaoAtual.posicao);
-
-    for (const vizinho of vizinhos) {
-      if (listaFechada.has(vizinho.posicao.toString())) {
-        continue;
-      }
-
-      const custoAtualG = posicaoAtual.g + vizinho.custo;
-
-      if (!listaAberta.find(no => no.posicao.toString() === vizinho.posicao.toString()) || custoAtualG < vizinho.g) {
-        vizinho.g = custoAtualG;
-        vizinho.h = distanciaEuclidiana(vizinho.posicao, fim);
-        vizinho.f = vizinho.g + vizinho.h;
-        vizinho.pai = posicaoAtual;
-
-        if (!listaAberta.find(no => no.posicao.toString() === vizinho.posicao.toString())) {
-          listaAberta.push(vizinho);
+function init(matrizMapa) {
+    for (let x = 0; x < matrizMapa.length; x++) {
+        for (let y = 0; y < matrizMapa[x].length; y++) {
+            matrizMapa[x][y] = {
+                f: 0,
+                g: 0,
+                h: 0,
+                debug: "",
+                parent: null,
+                custo: matrizMapa[x][y]
+            };
         }
-      }
     }
-  }
-
-  console.log('Caminho não encontrado');
-  return null;
 }
 
-function encontrarMenorValorF(listaAberta) {
-  let menorF = Infinity;
-  let menorNo = null;
+function aStar(matrizMapa, startX, startY, endX, endY) {
+    init(matrizMapa);
 
-  for (const no of listaAberta) {
-    if (no.f < menorF) {
-      menorF = no.f;
-      menorNo = no;
+    const start = matrizMapa[startX][startY];
+    const end = matrizMapa[endX][endY];
+
+    const openList = [];
+    const closedList = [];
+    openList.push(start);
+
+    while (openList.length > 0) {
+        const lowInd = openList.reduce((minInd, currentNode, ind) => {
+            return currentNode.f < openList[minInd].f ? ind : minInd;
+        }, 0);
+        const currentNode = openList[lowInd];
+
+        if (currentNode === end) {
+            let curr = currentNode;
+            const ret = [];
+            while (curr.parent) {
+                ret.push(curr);
+                curr = curr.parent;
+            }
+            return ret.reverse();
+        }
+
+        openList.splice(lowInd, 1);
+        closedList.push(currentNode);
+        const neighbors = getNeighbors(matrizMapa, currentNode.pos.x, currentNode.pos.y);
+
+        for (const neighbor of neighbors) {
+            if (closedList.includes(neighbor) || neighbor.isWall()) {
+                continue;
+            }
+
+            const gScore = currentNode.g + 1;
+            let gScoreIsBest = false;
+
+            if (!openList.includes(neighbor)) {
+                gScoreIsBest = true;
+                neighbor.h = heuristic(neighbor.pos, end.pos);
+                openList.push(neighbor);
+            }
+            else if (gScore < neighbor.g) {
+                gScoreIsBest = true;
+            }
+
+            if (gScoreIsBest) {
+                neighbor.parent = currentNode;
+                neighbor.g = gScore;
+                neighbor.f = neighbor.g + neighbor.h;
+                neighbor.debug = `F: ${neighbor.f}<br />G: ${neighbor.g}<br />H: ${neighbor.h}`;
+            }
+        }
     }
-  }
 
-  return menorNo;
+    return [];
 }
 
-function reconstrirCaminho(no) {
-  const caminho = [];
-  let posicaoAtual = no;
-
-  while (posicaoAtual.pai) {
-    caminho.push(posicaoAtual.posicao);
-    posicaoAtual = posicaoAtual.pai;
-  }
-
-  return caminho.reverse();
+function heuristic(pos0, pos1) {
+    // Euclidean distance
+    const d1 = Math.abs(pos1.x - pos0.x);
+    const d2 = Math.abs(pos1.y - pos0.y);
+    return Math.sqrt(Math.pow(d1, 2) + Math.pow(d2, 2));
 }
 
-function obterVizinhos(matrizMapaHyrule, posicao) {
-  const [x, y] = posicao;
-  const vizinhos = [];
-  const direcoes = [[0, 1], [0, -1], [1, 0], [-1, 0]]; // Movimentos possíveis (direita, esquerda, baixo, cima)
+function getNeighbors(matrizMapa, x, y) {
+    const ret = [];
 
-  for (const [dx, dy] of direcoes) {
-    const novoX = x + dx;
-    const novoY = y + dy;
-
-    if (novoX >= 0 && novoX < matrizMapaHyrule.length && novoY >= 0 && novoY < matrizMapaHyrule[0].length) {
-      const custo = calcularCusto(matrizMapaHyrule[novoX][novoY]);
-
-      if (custo !== Infinity) {
-        vizinhos.push({ posicao: [novoX, novoY], custo });
-      }
+    if (x > 0 && matrizMapa[x - 1][y] !== undefined) {
+        ret.push(matrizMapa[x - 1][y]);
     }
-  }
+    if (x < matrizMapa.length - 1 && matrizMapa[x + 1][y] !== undefined) {
+        ret.push(matrizMapa[x + 1][y]);
+    }
+    if (y > 0 && matrizMapa[x][y - 1] !== undefined) {
+        ret.push(matrizMapa[x][y - 1]);
+    }
+    if (y < matrizMapa[x].length - 1 && matrizMapa[x][y + 1] !== undefined) {
+        ret.push(matrizMapa[x][y + 1]);
+    }
 
-  return vizinhos;
-}
-
-function calcularCusto(tipoTerreno) {
-  switch (tipoTerreno) {
-    case 0: // Grama
-      return 10;
-    case 1: // Areia
-      return 20;
-    case 2: // Floresta
-      return 100;
-    case 3: // Montanha
-      return 150;
-    case 4: // Água
-      return 180;
-    default:
-      return Infinity; //Terreno não caminhável
-  }
+    return ret;
 }
 
 export default aStar;
