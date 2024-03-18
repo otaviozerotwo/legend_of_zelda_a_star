@@ -19,7 +19,7 @@ function aStar(matrizMapaHyrule, inicio, fim) {
   console.log('Lista Fechada: ', listaFechada);
   console.log('Tamanho Lista Aberta: ', listaAberta.length);
 
-  while (listaAberta.length >= 0) {
+  while (listaAberta.length > 0) {
     console.log('Entrei no while!');
 
     const posicaoAtual = encontrarMenorValorF(listaAberta);
