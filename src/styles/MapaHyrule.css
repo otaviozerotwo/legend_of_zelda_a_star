@@ -1,0 +1,8 @@
+.mapa-hyrule-container {
+  display: grid;
+  grid-template-columns: repeat(42, 20px);
+  grid-template-rows: repeat(42, 20px);
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+

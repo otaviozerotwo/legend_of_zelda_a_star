@@ -1,0 +1,34 @@
+:root {
+  display: flex;
+  justify-content: center;
+}
+
+.mapa-linha {
+  display: block;
+}
+
+.mapa-celula {
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+  text-align: center;
+  line-height: 20px;
+  font-size: 10px;
+}
+
+.mapa-celula:not(:last-child) {
+  border-right: none;
+}
+
+.mapa-linha:not(:last-child) .mapa-celula {
+  border-bottom: none;
+}
+
+.mapa-celula:last-of-type {
+  border-right: none;
+}
+
+.mapa-linha:last-of-type .mapa-celula {
+  border-bottom: none;
+  border-right: 1px solid black;
+}
