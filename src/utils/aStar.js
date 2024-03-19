@@ -1,101 +1,59 @@
-function init(matrizMapa) {
-    for (let x = 0; x < matrizMapa.length; x++) {
-        for (let y = 0; y < matrizMapa[x].length; y++) {
-            matrizMapa[x][y] = {
-                f: 0,
-                g: 0,
-                h: 0,
-                debug: "",
-                parent: null,
-                custo: matrizMapa[x][y]
-            };
-        }
-    }
-}
+// PSEUDO CÓDIGO A*
 
-function aStar(matrizMapa, startX, startY, endX, endY) {
-    init(matrizMapa);
+// function A*_SEARCH (problem) returns a solution, or failure
 
-    const start = matrizMapa[startX][startY];
-    const end = matrizMapa[endX][endY];
+// var
+// 	node := a node with STATE = problem.INITIAL STATE; PATH-COST = 0
+// 	frontier := a priority queue ordered by PATH-COST with node as the only element
+// 	explored := an empty set
 
-    const openList = [];
-    const closedList = [];
-    openList.push(start);
+// begin
+// 	loop do
+// 		if EMPTY?(frontier) then return failure
+// 		node := POP (frontier) {chooses the node with lowest f(n) in frontier}
+// 		if problem.GOAL-TEST (node.STATE) then return SOLUTION(node)
+// 		add node.STATE to explored
+// 		for each action in problem.ACTIONS(node.STATE) do 
+// 			child := CHILD-NODE(problem, node, action)
+// 			if child.STATE is note in explored or frontier then frontier := INSERT (child, frontier)
+// 			else if child.STATE is in frontier with higher PATH-COST then replace that frontier node with child
+// 		end for
+// 	end loop
+// end
+// end function
 
-    while (openList.length > 0) {
-        const lowInd = openList.reduce((minInd, currentNode, ind) => {
-            return currentNode.f < openList[minInd].f ? ind : minInd;
-        }, 0);
-        const currentNode = openList[lowInd];
+/* Checklist
 
-        if (currentNode === end) {
-            let curr = currentNode;
-            const ret = [];
-            while (curr.parent) {
-                ret.push(curr);
-                curr = curr.parent;
-            }
-            return ret.reverse();
-        }
+1 - receber elemento de origem (inicio)
+  1.1 - criar estrutura da matriz para armazenar:
+    a) value = custo terreno + heuristica (distancia euclidiana)
+    b) [linha][coluna]
 
-        openList.splice(lowInd, 1);
-        closedList.push(currentNode);
-        const neighbors = getNeighbors(matrizMapa, currentNode.pos.x, currentNode.pos.y);
+2 - inserir elemento na lista de elementos a serem processados
+  2.1 - criar duas lista:
+    a) listaAberta (elementos a serem processados ou atual)
+    b) listaFechada (elementos já processados)
 
-        for (const neighbor of neighbors) {
-            if (closedList.includes(neighbor) || neighbor.isWall()) {
-                continue;
-            }
+3 - definir elemento como atual
+  ???
+4 - identificar candidatos a vizinhos
+  4.1 - criar função para encontrar vizinhos
+    a) deve verificar se o elemento está na posição da esquerda, da direita, de baixo ou de cima
+    b) ???
 
-            const gScore = currentNode.g + 1;
-            let gScoreIsBest = false;
+5 - calcular heuristica (distancia euclidiana)
+  5.1 - criar função calcularDistanciaEuclidiana e chamar sempre que o elemento origem (inicio) for atualizado
 
-            if (!openList.includes(neighbor)) {
-                gScoreIsBest = true;
-                neighbor.h = heuristic(neighbor.pos, end.pos);
-                openList.push(neighbor);
-            }
-            else if (gScore < neighbor.g) {
-                gScoreIsBest = true;
-            }
+6 - somar resultado da heuristica com o custo de cada elemento
+  6.1 - armazenar resultado da soma na matriz ???
 
-            if (gScoreIsBest) {
-                neighbor.parent = currentNode;
-                neighbor.g = gScore;
-                neighbor.f = neighbor.g + neighbor.h;
-                neighbor.debug = `F: ${neighbor.f}<br />G: ${neighbor.g}<br />H: ${neighbor.h}`;
-            }
-        }
-    }
+7 - mostrar na tela matriz com valores de custo + distancia atual de cada elemento
+  ???
+8 - remover elemento da lista de elementos a serem processados e inserir na lista de processados
+  ???
+9 - ordenar elementos restantes na lista de a serem processados pelo custo
+  ???
+10 - voltar ao tópico 2 até encontrar o destino
+  ???
 
-    return [];
-}
-
-function heuristic(pos0, pos1) {
-    // Euclidean distance
-    const d1 = Math.abs(pos1.x - pos0.x);
-    const d2 = Math.abs(pos1.y - pos0.y);
-    return Math.sqrt(Math.pow(d1, 2) + Math.pow(d2, 2));
-}
-
-function getNeighbors(matrizMapa, x, y) {
-    const ret = [];
-
-    if (x > 0 && matrizMapa[x - 1][y] !== undefined) {
-        ret.push(matrizMapa[x - 1][y]);
-    }
-    if (x < matrizMapa.length - 1 && matrizMapa[x + 1][y] !== undefined) {
-        ret.push(matrizMapa[x + 1][y]);
-    }
-    if (y > 0 && matrizMapa[x][y - 1] !== undefined) {
-        ret.push(matrizMapa[x][y - 1]);
-    }
-    if (y < matrizMapa[x].length - 1 && matrizMapa[x][y + 1] !== undefined) {
-        ret.push(matrizMapa[x][y + 1]);
-    }
-
-    return ret;
-}
-
-export default aStar;
+*/
