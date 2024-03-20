@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Celula from './Celula';
 import calcularDistanciaEuclidiana from './Heuristica';
 
 import '../styles/MapaHyrule.css';
 
-const MapaHyrule = ({ matrizMapaHyrule }) => {
+const MapaHyrule = ({ matrizMapaHyrule, destino }) => {
   const [posicaoAtual, setPosicaoAtual] = useState({ x: 25, y: 28 });
+
+  useEffect(() => {
+    setPosicaoAtual(destino);
+  }, [destino]);
 
   return (
     <div className="mapa-hyrule-container">
@@ -19,7 +23,7 @@ const MapaHyrule = ({ matrizMapaHyrule }) => {
               colIndex
             );
 
-            const custoComHeuristica = cell + heuristica;
+            const custoComHeuristica = (cell + heuristica).toFixed(2);
 
             return (
               <Celula

@@ -8,15 +8,15 @@
 }
 
 .mapa-celula {
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   border: 1px solid black;
   text-align: center;
   line-height: 20px;
   font-size: 10px;
 }
 
-.mapa-celula:not(:last-child) {
+/* .mapa-celula:not(:last-child) {
   border-right: none;
 }
 
@@ -31,4 +31,4 @@
 .mapa-linha:last-of-type .mapa-celula {
   border-bottom: none;
   border-right: 1px solid black;
-}
+} */
