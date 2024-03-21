@@ -17,9 +17,8 @@ const matrizMapaHyrule = [
 
 const MapaHyrule = ({ matrizMapaHyrule }) => {
   const [posicaoAtual, setPosicaoAtual] = useState([4, 5]); // Inicializando na posição [4, 5]
-  const [posicoesVisitadas, setPosicoesVisitadas] = useState(new Set());
+  const [visitado, setVisitado] = useState(Array.from({ length: matrizMapaHyrule.length }, () => Array.from({ length: matrizMapaHyrule[0].length }, () => false)));
 
-  // Função para percorrer a matriz
   useEffect(() => {
     const pontoFim = [9, 9];
 
@@ -48,34 +47,38 @@ const MapaHyrule = ({ matrizMapaHyrule }) => {
         let novaPosicao = prevPosicao;
         vizinhos.forEach(([linha, coluna]) => {
           const custoVizinho = calcularCusto(linha, coluna);
-          if (!posicoesVisitadas.has(`${linha},${coluna}`) && custoVizinho < menorCusto) {
+          if (!visitado[linha][coluna] && custoVizinho < menorCusto) {
             menorCusto = custoVizinho;
             novaPosicao = [linha, coluna];
           }
         });
 
-        // Adicionar a posição atual às posições visitadas
-        setPosicoesVisitadas(prevPosicoesVistadas => {
-          const novasPosicoesVisitadas = new Set(prevPosicoesVistadas);
-          novasPosicoesVisitadas.add(`${linhaAtual}, ${colunaAtual}`);
+        // Marcar a posição atual como visitada
+        setVisitado(prevVisitado => {
+          const novoVisitado = prevVisitado.map((linha, indexLinha) =>
+            linha.map((valor, indexColuna) =>
+              indexLinha === linhaAtual && indexColuna === colunaAtual ? true : valor
+            )
+          );
+          console.log(novoVisitado);
           
-          console.log(novasPosicoesVisitadas);
-          
-          return novasPosicoesVisitadas;
+          return novoVisitado;
         });
 
-        console.log(menorCusto);
-
-        if (menorCusto === Infinity || novaPosicao[0] === pontoFim[0] && novaPosicao[1] === pontoFim[1]) {
+        // eslint-disable-next-line no-mixed-operators
+        if (!novaPosicao || (novaPosicao[0] === pontoFim[0] && novaPosicao[1] === pontoFim[1])) {
           clearInterval(intervalId);
         }
+        
+        console.log(novaPosicao);
 
         return novaPosicao;
+
       });
     }, 500);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [matrizMapaHyrule, visitado]);
 
   // Renderização da matriz na tela
   return (
@@ -85,7 +88,7 @@ const MapaHyrule = ({ matrizMapaHyrule }) => {
           {row.map((cell, colIndex) => (
             <div 
               key={colIndex} 
-              style={{ backgroundColor: posicaoAtual[0] === rowIndex && posicaoAtual[1] === colIndex ? 'yellow' : posicoesVisitadas.has(`${rowIndex},${colIndex}`) ? 'gray' : 'transparent' }}
+              style={{ backgroundColor: posicaoAtual[0] === rowIndex && posicaoAtual[1] === colIndex ? 'yellow' : visitado[rowIndex][colIndex] ? 'gray' : 'transparent' }}
               className='mapa-celula'
             >
               {cell}
