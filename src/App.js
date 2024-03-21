@@ -47,7 +47,7 @@ const MapaHyrule = ({ matrizMapaHyrule }) => {
         let novaPosicao = prevPosicao;
         vizinhos.forEach(([linha, coluna]) => {
           const custoVizinho = calcularCusto(linha, coluna);
-          if (!visitado[linha][coluna] && custoVizinho < menorCusto) {
+          if ((!visitado[linha] || !visitado[linha][coluna]) && custoVizinho < menorCusto) {
             menorCusto = custoVizinho;
             novaPosicao = [linha, coluna];
           }
@@ -56,24 +56,21 @@ const MapaHyrule = ({ matrizMapaHyrule }) => {
         // Marcar a posição atual como visitada
         setVisitado(prevVisitado => {
           const novoVisitado = prevVisitado.map((linha, indexLinha) =>
-            linha.map((valor, indexColuna) =>
-              indexLinha === linhaAtual && indexColuna === colunaAtual ? true : valor
-            )
+            indexLinha === linhaAtual ? { ...linha, [colunaAtual]: true } : linha
           );
+
           console.log(novoVisitado);
-          
+
           return novoVisitado;
         });
 
-        // eslint-disable-next-line no-mixed-operators
-        if (!novaPosicao || (novaPosicao[0] === pontoFim[0] && novaPosicao[1] === pontoFim[1])) {
+        if (menorCusto === Infinity || (novaPosicao[0] === pontoFim[0] && novaPosicao[1] === pontoFim[1])) {
           clearInterval(intervalId);
         }
-        
+
         console.log(novaPosicao);
 
         return novaPosicao;
-
       });
     }, 500);
 
@@ -85,15 +82,17 @@ const MapaHyrule = ({ matrizMapaHyrule }) => {
     <div className="mapa-hyrule-container">
       {matrizMapaHyrule.map((row, rowIndex) => (
         <div key={rowIndex} className="mapa-linha">
-          {row.map((cell, colIndex) => (
-            <div 
-              key={colIndex} 
-              style={{ backgroundColor: posicaoAtual[0] === rowIndex && posicaoAtual[1] === colIndex ? 'yellow' : visitado[rowIndex][colIndex] ? 'gray' : 'transparent' }}
-              className='mapa-celula'
-            >
-              {cell}
-            </div>
-          ))}
+          {row.map((cell, colIndex) => {
+            const posicaoAtualValida = posicaoAtual[0] === rowIndex && posicaoAtual[1] === colIndex;
+            const visitadoValido = visitado[rowIndex] && visitado[rowIndex][colIndex];
+            return (
+              <div key={colIndex} style={{ backgroundColor: posicaoAtualValida ? 'yellow' : visitadoValido ? 'gray' : 'transparent' }}
+                className='mapa-celula'
+              >
+                {cell}
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>
@@ -109,4 +108,3 @@ function App() {
 }
 
 export default App;
-
