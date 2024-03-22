@@ -42,6 +42,12 @@ const MapaHyrule = ({ matrizMapaHyrule }) => {
           [linhaAtual, colunaAtual - 1]  // Esquerda
         ];
 
+        // Verificar se a posição atual já é a posição de destino
+        if (linhaAtual === pontoFim[0] && colunaAtual === pontoFim[1]) {
+          clearInterval(intervalId);
+          return prevPosicao; // Retornar a posição atual, pois já estamos no destino
+        }
+
         // Encontrar a posição vizinha com menor custo
         let menorCusto = Infinity;
         let novaPosicao = prevPosicao;
@@ -50,7 +56,7 @@ const MapaHyrule = ({ matrizMapaHyrule }) => {
           if ((!visitado[linha] || !visitado[linha][coluna]) && custoVizinho < menorCusto) {
             menorCusto = custoVizinho;
             novaPosicao = [linha, coluna];
-          }
+          } 
         });
 
         // Marcar a posição atual como visitada
@@ -59,16 +65,19 @@ const MapaHyrule = ({ matrizMapaHyrule }) => {
             indexLinha === linhaAtual ? { ...linha, [colunaAtual]: true } : linha
           );
 
-          console.log(novoVisitado);
+          console.log('Array visitados: ', novoVisitado);
 
           return novoVisitado;
         });
 
-        if (menorCusto === Infinity || (novaPosicao[0] === pontoFim[0] && novaPosicao[1] === pontoFim[1])) {
+        // Verificar se não há mais movimentos possíveis
+        const semMovimentos = vizinhos.every(([linha, coluna]) => calcularCusto(linha, coluna) === Infinity);
+
+        if ((novaPosicao[0] === pontoFim[0] && novaPosicao[1] === pontoFim[1]) || semMovimentos) {
           clearInterval(intervalId);
         }
 
-        console.log(novaPosicao);
+        console.log('Nova Posição: ', novaPosicao);
 
         return novaPosicao;
       });
