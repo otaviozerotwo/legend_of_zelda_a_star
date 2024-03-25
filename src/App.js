@@ -23,7 +23,7 @@ const matrizMapaHyrule = [
   [100, 10, 10, 10, 10],
 ];
 
-const pontoFim = [4, 0];
+const pontoFim = [0, 0];
 
 const MapaHyrule = ({ matrizMapaHyrule, pontoFim }) => {
   const [posicaoAtual, setPosicaoAtual] = useState([4, 5]); // Inicializando na posição [4, 5]
@@ -75,9 +75,9 @@ const MapaHyrule = ({ matrizMapaHyrule, pontoFim }) => {
 
           const novoCusto = custoOriginal + distanciaEuclidiana;
           
-          console.log('Custo Original: ', custoOriginal);
-          console.log('Heurística: ', distanciaEuclidiana);
-          console.log('Custo Final: ', novoCusto);
+          // console.log('Custo Original: ', custoOriginal);
+          // console.log('Heurística: ', distanciaEuclidiana);
+          // console.log('Custo Final: ', novoCusto);
 
           return novoCusto;
         };
@@ -126,6 +126,9 @@ const MapaHyrule = ({ matrizMapaHyrule, pontoFim }) => {
             !visitado[linha][coluna]
           ) {
             const custoVizinho = calcularCusto(linha, coluna);
+
+            console.log(`Custo do vizinho [${linha},${coluna}]:`, custoVizinho);
+
             if (custoVizinho < menorCusto) {
               menorCusto = custoVizinho;
               novaPosicao = [linha, coluna];
@@ -144,6 +147,10 @@ const MapaHyrule = ({ matrizMapaHyrule, pontoFim }) => {
           return novoVisitado;
         });
         setCaminhoPercorrido((prevCaminho) => [...prevCaminho, prevPosicao]);
+
+        // Log dos valores para depuração
+        console.log('Menor custo encontrado: ', menorCusto);
+        console.log('Nova posição selecionar: ', novaPosicao);
 
         // Verificar se encontrou um vizinho válido
         if (encontrouVizinho) {
