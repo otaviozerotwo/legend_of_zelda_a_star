@@ -31,10 +31,11 @@ const matrizMapaHyrule = [
 //   [0, 0, 0, 0, 0],
 // ];
 
+const pontoInicio = [4, 5];
 const pontoFim = [0, 0];
 
-const MapaHyrule = ({ matrizMapaHyrule, pontoFim }) => {
-  const [posicaoAtual, setPosicaoAtual] = useState([4, 5]); // Inicializando na posição [4, 5]
+const MapaHyrule = ({ matrizMapaHyrule, pontoInicio, pontoFim }) => {
+  const [posicaoAtual, setPosicaoAtual] = useState(pontoInicio); 
   const [visitado, setVisitado] = useState(
     Array.from({ length: matrizMapaHyrule.length }, () =>
       Array.from({ length: matrizMapaHyrule[0].length }, () => false)
@@ -52,8 +53,6 @@ const MapaHyrule = ({ matrizMapaHyrule, pontoFim }) => {
   };
 
   useEffect(() => {
-    // const pontoFim = [3, 3];
-
     const intervalId = setInterval(() => {
       setPosicaoAtual((prevPosicao) => {
         const [linhaAtual, colunaAtual] = prevPosicao;
@@ -109,17 +108,39 @@ const MapaHyrule = ({ matrizMapaHyrule, pontoFim }) => {
           );
         });
 
+        const calcularVizinhosNaoVisitados = (linha, coluna) => {
+          const vizinhosNaoVisitados = [];
+          const vizinhos = [
+            [linha - 1, coluna], // Cima
+            [linha, coluna + 1], // Direita
+            [linha + 1, coluna], // Baixo
+            [linha, coluna - 1], // Esquerda
+          ];
+          for (const [linhaVizinho, colunaVizinho] of vizinhos) {
+            if (
+              linhaVizinho >= 0 &&
+              linhaVizinho < matrizMapaHyrule.length &&
+              colunaVizinho >= 0 &&
+              colunaVizinho < matrizMapaHyrule[0].length &&
+              !visitado[linhaVizinho][colunaVizinho]
+            ) {
+              vizinhosNaoVisitados.push([linhaVizinho, colunaVizinho]);
+            }
+          }
+          return vizinhosNaoVisitados;
+        };
+
         // // Se todos os vizinhos estiverem visitados, estamos em um beco sem saída
-        // if (todosVizinhosVisitados) {
-        //   setCaminhoSemSaida(true);
-        //   if (pilhaPosicoes.length > 0) {
-        //     // Retroceder para a última posição não visitada
-        //     const ultimaPosicao = pilhaPosicoes.pop();
-        //     setPosicaoAtual(ultimaPosicao);
-        //     setCaminhoPercorrido((prevCaminho) => prevCaminho.slice(0, -1)); // Remover a última posição do caminho percorrido
-        //   }
-        //   return prevPosicao;
-        // }
+        if (todosVizinhosVisitados) {
+          setCaminhoSemSaida(true);
+          if (pilhaPosicoes.length > 0) {
+            // Retroceder para a última posição não visitada
+            const ultimaPosicao = pilhaPosicoes.pop();
+            setPosicaoAtual(ultimaPosicao);
+            setCaminhoPercorrido((prevCaminho) => prevCaminho.slice(0, -1)); // Remover a última posição do caminho percorrido
+          }
+          return prevPosicao;
+        }
 
         // Se todos os vizinhos estiverem visitados, estamos em um beco sem saída
         if (todosVizinhosVisitados) {
@@ -202,7 +223,7 @@ const MapaHyrule = ({ matrizMapaHyrule, pontoFim }) => {
     }, 500);
 
     return () => clearInterval(intervalId);
-  }, [matrizMapaHyrule, pilhaPosicoes, pontoFim, visitado]);
+  }, [matrizMapaHyrule, pilhaPosicoes, pontoInicio, pontoFim, visitado]);
 
   // Renderização da matriz na tela
   return (
