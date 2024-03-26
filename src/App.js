@@ -23,6 +23,14 @@ const matrizMapaHyrule = [
   [100, 10, 10, 10, 10],
 ];
 
+// const matrizMapaHyrule = [
+//   [0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0],
+//   [0, 0, 0, 0, 0],
+// ];
+
 const pontoFim = [0, 0];
 
 const MapaHyrule = ({ matrizMapaHyrule, pontoFim }) => {
@@ -181,8 +189,8 @@ const MapaHyrule = ({ matrizMapaHyrule, pontoFim }) => {
             const visitadoValido = visitado[rowIndex] && visitado[rowIndex][colIndex];
             const noCaminho = caminhoPercorrido.some(([linha, coluna]) => linha === rowIndex && coluna === colIndex);
             const distanciaEuclidiana = calcularDistanciaEuclidiana([rowIndex, colIndex], pontoFim);
-            // const novoCusto = cell + distanciaEuclidiana;
-            // const valorCelula = novoCusto.toFixed(2);
+            const novoCusto = cell + distanciaEuclidiana;
+            const valorCelula = novoCusto.toFixed(2);
             return (
               <div
                 key={colIndex}
@@ -195,7 +203,7 @@ const MapaHyrule = ({ matrizMapaHyrule, pontoFim }) => {
                     : "transparent",
                 }}
               >
-                {distanciaEuclidiana.toFixed(2)}
+                {valorCelula}
                 {caminhoSemSaida && posicaoAtual[0] === rowIndex && posicaoAtual[1] === colIndex ? 'X' : null}
               </div>
             );
