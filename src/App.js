@@ -109,14 +109,39 @@ const MapaHyrule = ({ matrizMapaHyrule, pontoFim }) => {
           );
         });
 
+        // // Se todos os vizinhos estiverem visitados, estamos em um beco sem saída
+        // if (todosVizinhosVisitados) {
+        //   setCaminhoSemSaida(true);
+        //   if (pilhaPosicoes.length > 0) {
+        //     // Retroceder para a última posição não visitada
+        //     const ultimaPosicao = pilhaPosicoes.pop();
+        //     setPosicaoAtual(ultimaPosicao);
+        //     setCaminhoPercorrido((prevCaminho) => prevCaminho.slice(0, -1)); // Remover a última posição do caminho percorrido
+        //   }
+        //   return prevPosicao;
+        // }
+
         // Se todos os vizinhos estiverem visitados, estamos em um beco sem saída
         if (todosVizinhosVisitados) {
           setCaminhoSemSaida(true);
-          if (pilhaPosicoes.length > 0) {
+          // Retroceder até encontrar uma posição com vizinhos não visitados
+          let encontrouCaminho = false;
+          while (pilhaPosicoes.length > 0 && !encontrouCaminho) {
             // Retroceder para a última posição não visitada
             const ultimaPosicao = pilhaPosicoes.pop();
-            setPosicaoAtual(ultimaPosicao);
-            setCaminhoPercorrido((prevCaminho) => prevCaminho.slice(0, -1)); // Remover a última posição do caminho percorrido
+            const [ultimaLinha, ultimaColuna] = ultimaPosicao;
+            const vizinhosNaoVisitados = calcularVizinhosNaoVisitados(ultimaLinha, ultimaColuna);
+            if (vizinhosNaoVisitados.length > 0) {
+              // Encontrou uma posição com vizinhos não visitados
+              encontrouCaminho = true;
+              setPosicaoAtual(ultimaPosicao);
+              setCaminhoPercorrido((prevCaminho) => prevCaminho.slice(0, -1)); // Remover a última posição do caminho percorrido
+            }
+          }
+          if (!encontrouCaminho) {
+            // Não foi possível encontrar um caminho alternativo, retroceder até o início
+            setPosicaoAtual(pontoInicio);
+            setCaminhoPercorrido([]); // Limpar o caminho percorrido
           }
           return prevPosicao;
         }
