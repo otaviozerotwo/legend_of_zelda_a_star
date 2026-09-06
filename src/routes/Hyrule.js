@@ -32,13 +32,13 @@ const Hyrule = () => {
   useEffect(() => {
     // Encontra a entrada mais próxima sempre que houver uma mudança nas entradas de dungeons
     setEntradaMaisProxima(encontrarEntradaDungeon());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entradasDungeonsAtualizadas]);
 
   useEffect(() => {
     if (percorrerMapaClicado && caminho) {
       const interval = setInterval(() => {
-        if (celulaAtualIndex < (caminho.length -1)) {
+        if (celulaAtualIndex < (caminho.length - 1)) {
           const currentNode = caminho[celulaAtualIndex];
           setCelulaAtualIndex(prevIndex => prevIndex + 1);
           setCustoTotal(prevCustoTotal => prevCustoTotal + currentNode.weight);
@@ -60,7 +60,7 @@ const Hyrule = () => {
   useEffect(() => {
     if (percorrerMapaClicado && caminho) {
       const interval = setInterval(() => {
-        if (celulaAtualIndex < (caminho.length -1)) {
+        if (celulaAtualIndex < (caminho.length - 1)) {
           const currentNode = caminho[celulaAtualIndex];
           // Marca a célula atual como percorrida na matriz de células percorridas
           setCelulasPercorridas(prevCelulasPercorridas => {
@@ -90,7 +90,7 @@ const Hyrule = () => {
         }
       }
     });
-    
+
     return entradaMaisProxima;
   };
 
@@ -98,12 +98,12 @@ const Hyrule = () => {
     setPercorrerMapaClicado(true);
     console.log('entradaMaisProxima: ', entradaMaisProxima);
     console.log('lista entradas: ', entradasDungeons);
-    
+
     // Verifica se todas as entradas já foram visitadas
     const todasVisitadas = entradasDungeons.every(entrada => entrada.visitado);
 
     console.log('todasVistadas: ', todasVisitadas);
-    
+
     // Se todas as entradas foram visitadas, define o caminho para ir até o nó final
     if (todasVisitadas) {
       setCaminho(astar.search(graph, graph.grid[startNode.x][startNode.y], graph.grid[endNode.x][endNode.y]));
@@ -140,7 +140,7 @@ const Hyrule = () => {
       }
     }
   };
-  
+
   return (
     <>
       <div className="menu-acoes">
@@ -161,14 +161,14 @@ const Hyrule = () => {
             <div key={rowIndex} className="mapa-linha">
               {row.map((cell, cellIndex) => {
                 const className = atribuirClassNameParaCelula(cell);
-                const isCelulaAtual = celulaAtualIndex < (caminho.length -1) && caminho[celulaAtualIndex]?.x === rowIndex && caminho[celulaAtualIndex]?.y === cellIndex;
+                const isCelulaAtual = celulaAtualIndex < (caminho.length - 1) && caminho[celulaAtualIndex]?.x === rowIndex && caminho[celulaAtualIndex]?.y === cellIndex;
                 const isCelulaPercorrida = celulasPercorridas[rowIndex][cellIndex];
-                
+
                 return (
-                  <div 
-                    key={cellIndex} 
+                  <div
+                    key={cellIndex}
                     className={`mapa-celula ${className} ${isCelulaAtual ? 'mapa-celula-posicao-atual-caminho-ida' : ''} ${isCelulaPercorrida ? 'mapa-celula-caminho-percorrido-ida' : ''}`} >
-                    
+
                     {/* <span className="mapa-coordenada-x">{`x: ${rowIndex}`}</span>  
                     <span className="mapa-coordenada-y">{`y: ${cellIndex}`}</span>   */}
                     {/* <span className="mapa-celula-custo-fixo">{cell}</span> */}
@@ -179,9 +179,9 @@ const Hyrule = () => {
           ))}
         </div>
       </div>
-      <Resultados 
+      <Resultados
         custoTotal={custoTotal}
-        fimDeJogo={fimDeJogo} 
+        fimDeJogo={fimDeJogo}
       />
     </>
   );
