@@ -4,9 +4,12 @@
 }
 
 .container {
-  display: flex; /* Usa flexbox para posicionar os elementos */
-  width: 100%; /* Define a largura total do container */
-  height: 100vh; /* Define a altura total do container */
+  display: flex;
+  /* Usa flexbox para posicionar os elementos */
+  width: 100%;
+  /* Define a largura total do container */
+  height: 100vh;
+  /* Define a altura total do container */
 }
 
 .titulo {
@@ -15,7 +18,8 @@
 }
 
 .mapa-container {
-  flex-grow: 1; /* Permite que o mapa ocupe todo o espaço restante */
+  flex-grow: 1;
+  /* Permite que o mapa ocupe todo o espaço restante */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -80,22 +84,22 @@
 }
 
 .cell-hyrule-entrada-lost-woods {
-  background-image: url('/public/img-entrada-lost-woods.png');
+  background-image: url('/src/assets/images/img-entrada-lost-woods.png');
   background-size: cover;
 }
 
 .cell-hyrule-link-house {
-  background-image: url('/public/img-links-house.png');
+  background-image: url('/src/assets/images/img-links-house.png');
   background-size: cover;
 }
 
 .cell-hyrule-master-sword {
-  background-image: url('/public/img-master-sword.png');
+  background-image: url('/src/assets/images/img-master-sword.png');
   background-size: cover;
 }
 
 .cell-hyrule-value-0 {
-  background-image: url('/public/img-entrada-dungeon.png');
+  background-image: url('/src/assets/images/img-entrada-dungeon.png');
   background-size: cover;
 }
 
@@ -120,7 +124,7 @@
 }
 
 .cell-dungeon-value-0 {
-  background-image: url('/public/img-entrada-dungeon.png');
+  background-image: url('/src/assets/images/img-entrada-dungeon.png');
   background-size: cover;
 }
 
@@ -133,7 +137,8 @@
 }
 
 .cell-dungeon-value-99 {
-  background-color: #888887;;
+  background-color: #888887;
+  ;
 }
 
 .cell-dungeon-value-100 {
@@ -141,28 +146,29 @@
 }
 
 .cell-dungeon-value-pingente-1 {
-  background-image: url('/public/img-pingente-azul.png');
+  background-image: url('/src/assets/images/img-pingente-azul.png');
   background-size: cover;
 }
 
 .cell-dungeon-value-pingente-2 {
-  background-image: url('/public/img-pingente-verde.png');
+  background-image: url('/src/assets/images/img-pingente-verde.png');
   background-size: cover;
 
 }
+
 .cell-dungeon-value-pingente-3 {
-  background-image: url('/public/img-pingente-vermelho.png');
+  background-image: url('/src/assets/images/img-pingente-vermelho.png');
   background-size: cover;
 }
 
 .mapa-celula-posicao-atual-caminho-ida {
-  background-image: url('/public/img-link.png');
+  background-image: url('/src/assets/images/img-link.png');
   background-size: 15px 15px;
   background-repeat: no-repeat;
 }
 
 .mapa-celula-posicao-atual {
-  background-image: url('/public/img-link.png');
+  background-image: url('/src/assets/images/img-link.png');
   background-size: 15px 15px;
   background-repeat: no-repeat;
 }
