@@ -1,7 +1,8 @@
 # 🗡️ The Legend of Zelda: A* Pathfinding Simulator
 
-![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![React Router](https://img.shields.io/badge/React_Router-6.22.3-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8.x-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![React](https://img.shields.io/badge/React-19.x-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![React Router](https://img.shields.io/badge/React_Router-7.x-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![CSS3](https://img.shields.io/badge/CSS3-Grid_%26_Flexbox-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
@@ -41,7 +42,7 @@ O propósito da aplicação é unir conceitos teóricos de **Inteligência Artif
 ## 👥 Público-alvo
 
 - **Estudantes de Ciência da Computação, Engenharia de Software e IA**: Que buscam compreender o funcionamento visual do algoritmo A*, filas de prioridade e representação matricial de grafos.
-- **Desenvolvedores Web / Front-End**: Interessados em gerenciamento de estado global com React Context API, controle de rotas com React Router DOM v6 e sincronização de animações temporais em grids CSS.
+- **Desenvolvedores Web / Front-End**: Interessados em gerenciamento de estado global com React Context API, controle de rotas com React Router DOM v7 e sincronização de animações temporais em grids CSS.
 - **Fãs de Jogos Retrô e Game Dev**: Entusiastas que apreciam o universo de The Legend of Zelda e desejam entender algoritmos de *pathfinding* aplicados a jogos 2D.
 
 ---
@@ -78,11 +79,13 @@ O propósito da aplicação é unir conceitos teóricos de **Inteligência Artif
 
 | Tecnologia | Finalidade |
 |---|---|
-| **React 18.2.0** | Biblioteca base para construção de componentes declarativos e gerenciamento de ciclo de vida com Hooks (`useState`, `useEffect`, `useContext`). |
-| **React Router DOM 6.22.3** | Gerenciamento de rotas do lado do cliente (SPA) via `createBrowserRouter` e `RouterProvider`. |
+| **Vite 8** | Ferramenta de build moderna e servidor de desenvolvimento com inicialização instantânea e Hot Module Replacement (HMR). |
+| **React 19** | Biblioteca base para construção de componentes declarativos e gerenciamento de ciclo de vida com Hooks (`useState`, `useEffect`, `useContext`). |
+| **React Router DOM 7** | Gerenciamento de rotas do lado do cliente (SPA) via `createBrowserRouter` e `RouterProvider`. |
 | **React Context API** | Compartilhamento e persistência de estados globais (`StartEndNodesContext` e `CustoCaminhoContext`). |
 | **JavaScript (ES6+)** | Lógica de grafos, nós (`GridNode`), fila de prioridade binária (`BinaryHeap`) e algoritmo A*. |
 | **CSS3 (Grid & Flexbox)** | Renderização das matrizes bidimensionais de 42x42 e 28x28 células, estilização temática e sprites pixel art. |
+| **ESLint 10** | Padronização e qualidade de código estático via configuração moderna (`eslint.config.js`). |
 | **Fontes Personalizadas** | `@font-face` com tipografias inspiradas na franquia: *Hylia Serif*, *Reggae One* e *Triforce*. |
 
 ---
@@ -132,43 +135,44 @@ $$f(n) = g(n) + h(n)$$
 
 ```bash
 legend_of_zelda_a_star_react/
-├── public/                                # Assets públicos e imagens
-│   ├── favicon.ico
-│   ├── img-entrada-dungeon.png            # Sprite da entrada de dungeon
-│   ├── img-entrada-lost-woods.png         # Sprite de entrada dos Lost Woods
-│   ├── img-link.png                       # Sprite de Link
-│   ├── img-links-house.png                # Sprite da casa de Link
-│   ├── img-master-sword.png               # Sprite da Master Sword
-│   ├── img-pingente-azul.png              # Pingente Dungeon 1
-│   ├── img-pingente-verde.png             # Pingente Dungeon 2
-│   ├── img-pingente-vermelho.png          # Pingente Dungeon 3
-│   ├── index.html                         # HTML template da SPA
-│   ├── master-sword.png                   # Ícone para o painel de resultados
-│   ├── pendant-blue.png                   # Ícone do pingente azul para o painel
-│   ├── pendant-green.png                  # Ícone do pingente verde para o painel
-│   └── pendant-red.png                    # Ícone do pingente vermelho para o painel
+├── public/                                # Assets públicos estáticos
+│   ├── favicon.svg                        # Favicon da aplicação
+│   └── icons.svg                          # Sprites SVG adicionais
 ├── src/
-│   ├── assets/                            # Fontes personalizadas da franquia Zelda
-│   │   ├── fonts/
+│   ├── assets/                            # Recursos visuais e tipográficos
+│   │   ├── fonts/                         # Tipografias inspiradas na franquia Zelda
 │   │   │   ├── HyliaSerifBeta-Regular.otf
 │   │   │   ├── ReggaeOne-Regular.ttf
 │   │   │   └── Triforce.ttf
-│   │   └── fonts.css
+│   │   ├── images/                        # Sprites e ícones de itens e personagens
+│   │   │   ├── img-entrada-dungeon.png
+│   │   │   ├── img-entrada-lost-woods.png
+│   │   │   ├── img-link.png
+│   │   │   ├── img-links-house.png
+│   │   │   ├── img-master-sword.png
+│   │   │   ├── img-pingente-azul.png
+│   │   │   ├── img-pingente-verde.png
+│   │   │   ├── img-pingente-vermelho.png
+│   │   │   ├── master-sword.png
+│   │   │   ├── pendant-blue.png
+│   │   │   ├── pendant-green.png
+│   │   │   └── pendant-red.png
+│   │   └── fonts.css                      # Definições de @font-face
 │   ├── components/                        # Componentes reutilizáveis
-│   │   └── Resultados.js                  # Painel lateral com custo e inventário
+│   │   └── Resultados.jsx                 # Painel lateral com custo e inventário
 │   ├── context/                           # Gerenciamento de Estado Global
-│   │   ├── CustoCaminhoContext.js         # Contexto do custo acumulado
-│   │   └── StartEndNodesContext.js        # Contexto das coordenadas de início e fim
+│   │   ├── CustoCaminhoContext.jsx        # Contexto do custo acumulado
+│   │   └── StartEndNodesContext.jsx       # Contexto das coordenadas de início e fim
 │   ├── data/                              # Matrizes dos mapas
 │   │   ├── GridHyrule.js                  # Matriz 42x42 do Reino de Hyrule
 │   │   ├── GridMapaDungeon1.js            # Matriz 28x28 da Dungeon #1
 │   │   ├── GridMapaDungeon2.js            # Matriz 28x28 da Dungeon #2
 │   │   └── GridMapaDungeon3.js            # Matriz 28x28 da Dungeon #3
 │   ├── routes/                            # Páginas / Rotas da Aplicação
-│   │   ├── Dungeon1.js                    # Rota e lógica da Dungeon #1
-│   │   ├── Dungeon2.js                    # Rota e lógica da Dungeon #2
-│   │   ├── Dungeon3.js                    # Rota e lógica da Dungeon #3
-│   │   └── Hyrule.js                      # Rota principal do mapa de Hyrule
+│   │   ├── Dungeon1.jsx                   # Rota e lógica da Dungeon #1
+│   │   ├── Dungeon2.jsx                   # Rota e lógica da Dungeon #2
+│   │   ├── Dungeon3.jsx                   # Rota e lógica da Dungeon #3
+│   │   └── Hyrule.jsx                     # Rota principal do mapa de Hyrule
 │   ├── styles/                            # Estilizações modulares
 │   │   ├── MenuAcoes.css                  # Estilos do menu lateral de botões
 │   │   └── PainelResultados.css           # Estilos do painel de itens e métricas
@@ -178,15 +182,18 @@ legend_of_zelda_a_star_react/
 │   │   ├── AtribuirClassNameDungeon2.js   # Mapeamento de classes CSS da Dungeon 2
 │   │   ├── AtribuirClassNameDungeon3.js   # Mapeamento de classes CSS da Dungeon 3
 │   │   ├── AtribuirClassNameHyrule.js     # Mapeamento de classes CSS de Hyrule
-│   │   ├── CalcularDistancia.js           # Cálculo euclidiano entre coordenadas
+│   │   ├── calcularDistancia.js           # Cálculo euclidiano entre coordenadas
 │   │   ├── EntradasDungeons.js            # Coordenadas e status das 3 masmorras
 │   │   ├── Graph.js                       # Estrutura de dados do Grafo em grade
 │   │   └── GridNode.js                    # Representação individual de cada célula/nó
-│   ├── App.css
-│   ├── App.js                             # Componente base com container e Outlet
+│   ├── App.jsx                            # Componente base com container e Outlet
 │   ├── index.css                          # Estilização global e renderização de grids
-│   └── index.js                           # Ponto de entrada e configuração do Router
-├── package.json
+│   └── main.jsx                           # Ponto de entrada da aplicação Vite e Router
+├── eslint.config.js                       # Configuração moderna do ESLint (flat config)
+├── index.html                             # Template HTML na raiz (ponto de entrada Vite)
+├── package.json                           # Configuração do projeto e dependências
+├── vercel.json                            # Regras de rewrite SPA para deploy
+├── vite.config.js                         # Configurações do Vite e plugins
 └── README.md
 ```
 
@@ -220,8 +227,8 @@ Como a aplicação é uma **Single Page Application (SPA)** 100% executada no cl
 ### Pré-requisitos
 
 Certifique-se de ter instalados em seu computador:
-- **[Node.js](https://nodejs.org/)** (versão 16.x, 18.x ou superior recomendada)
-- Gerenciador de pacotes **npm** ou **yarn**
+- **[Node.js](https://nodejs.org/)** (versão 18.x ou superior recomendada)
+- Gerenciador de pacotes **npm**, **yarn** ou **pnpm**
 
 ### Passo a Passo
 
@@ -242,14 +249,23 @@ Certifique-se de ter instalados em seu computador:
 
 4. **Inicie o servidor de desenvolvimento:**
    ```bash
-   npm start
+   npm run dev
    ```
 
 5. **Abra no navegador:**
-   A aplicação será iniciada automaticamente no endereço:
+   O Vite disponibilizará a aplicação no endereço:
    ```
-   http://localhost:3000
+   http://localhost:5173
    ```
+
+### 📜 Scripts Disponíveis
+
+| Comando | Descrição |
+|---|---|
+| `npm run dev` | Inicia o servidor de desenvolvimento local com Vite e HMR instantâneo |
+| `npm run build` | Compila os arquivos otimizados para produção na pasta `dist/` |
+| `npm run preview` | Executa localmente o build de produção para validação pré-deploy |
+| `npm run lint` | Executa a análise estática de código com o ESLint |
 
 ---
 
@@ -276,6 +292,7 @@ Siga o passo a passo da jornada do herói para concluir o jogo:
 - **Estruturas de Dados Avançadas**: Utilização da estrutura `BinaryHeap` em JavaScript puro para gerenciar nós abertos com eficiência $O(\log N)$, evitando gargalos de desempenho em matrizes com centenas de elementos.
 - **Gerenciamento de Estado Global**: Coordenação de estados interdependentes (nós de origem/destino, custo total e inventário) utilizando React Context API entre diferentes rotas sem *prop drilling*.
 - **Controle de Fluxo e Animações em React**: Uso eficiente de `useEffect` associado a `setInterval` para orquestrar passos síncronos na renderização das células e limpeza adequada dos intervalos (*cleanup function*).
+- **Ferramental Moderno de Build com Vite**: Migração da arquitetura legada (Create React App) para Vite, usufruindo de compilação instantânea, suporte a ES Modules nativos e configuração otimizada de bundle.
 - **Design Temático e Pixel Art**: Criação de interfaces imersivas combinando CSS Grid para matrizes fixas, sprites em pixel art e tipografias customizadas `@font-face`.
 
 ---

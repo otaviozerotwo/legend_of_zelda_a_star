@@ -8,7 +8,7 @@ import entradasDungeons from '../utils/EntradasDungeons';
 import gridHyrule from '../data/GridHyrule';
 import { useStartEndNodes } from '../context/StartEndNodesContext';
 import Resultados from '../components/Resultados';
-import calcularDistancia from '../utils/CalcularDistancia';
+import calcularDistancia from '../utils/calcularDistancia';
 
 const Hyrule = () => {
   const [grid] = useState(gridHyrule);
