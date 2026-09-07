@@ -1,15 +1,11 @@
 :root {
-  /* display: flex; */
   background-color: #D1C368;
 }
 
 .container {
   display: flex;
-  /* Usa flexbox para posicionar os elementos */
   width: 100%;
-  /* Define a largura total do container */
   height: 100vh;
-  /* Define a altura total do container */
 }
 
 .titulo {
@@ -19,7 +15,6 @@
 
 .mapa-container {
   flex-grow: 1;
-  /* Permite que o mapa ocupe todo o espaço restante */
   display: flex;
   flex-direction: column;
   align-items: center;
